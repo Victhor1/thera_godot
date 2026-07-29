@@ -9,6 +9,7 @@ enum State { RISING, PLAYING, DEAD }
 @export var rise_speed: float = 350.0
 @export var triangle_width: float = 60.0
 @export var triangle_height: float = 65.0
+@export var tail_width: float = 16.0
 @export var player_color: Color = Color("#0075ff")
 @export var explosion_scene: PackedScene = preload("res://scenes/explosion.tscn")
 
@@ -51,6 +52,27 @@ func _process(delta: float) -> void:
 			position.y = target_y
 			current_state = State.PLAYING
 			reached_middle.emit()
+			
+	queue_redraw()
+
+func _draw() -> void:
+	if current_state == State.DEAD:
+		return
+		
+	var viewport_height: float = get_viewport_rect().size.y
+	var half_h: float = triangle_height / 2.0
+	var bottom_rel_y: float = viewport_height - global_position.y
+	
+	if bottom_rel_y > half_h:
+		var current_tail_width: float = triangle_width * 0.60
+		var half_tw: float = current_tail_width / 2.0
+		var tail_pts := PackedVector2Array([
+			Vector2(-half_tw, half_h),
+			Vector2(half_tw, half_h),
+			Vector2(half_tw, bottom_rel_y),
+			Vector2(-half_tw, bottom_rel_y)
+		])
+		draw_colored_polygon(tail_pts, player_color)
 
 func _on_area_entered(area: Area2D) -> void:
 	if current_state == State.DEAD:

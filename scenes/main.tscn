@@ -1,17 +1,17 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bvn4rx006p1w2"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://dnq1saf4r3284" path="res://scripts/main.gd" id="1_main"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1508651552]
 script = ExtResource("1_main")
 
-[node name="SpawnTimer" type="Timer" parent="."]
+[node name="SpawnTimer" type="Timer" parent="." unique_id=95418721]
 
-[node name="SquaresContainer" type="Node2D" parent="."]
+[node name="SquaresContainer" type="Node2D" parent="." unique_id=1080416234]
 
-[node name="UILayer" type="CanvasLayer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=2083817401]
 
-[node name="FPSLabel" type="Label" parent="UILayer"]
+[node name="FPSLabel" type="Label" parent="UILayer" unique_id=944108894]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -22,5 +22,5 @@ offset_bottom = 45.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(1, 1, 1, 0.8)
 theme_override_font_sizes/font_size = 18
-horizontal_alignment = 2
 text = "FPS: 60"
+horizontal_alignment = 2
