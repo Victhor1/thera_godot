@@ -24,6 +24,7 @@ window/size/window_height_override=800
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
 window/handheld/orientation="portrait"
+window/vsync/vsync_mode=0
 
 [physics]
 

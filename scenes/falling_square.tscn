@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/falling_square.gd" id="1_falling_square"]
 
-[node name="FallingSquare" type="Node2D"]
+[node name="FallingSquare" type="Area2D"]
 script = ExtResource("1_falling_square")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
