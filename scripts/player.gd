@@ -124,17 +124,49 @@ func _draw() -> void:
 		return
 		
 	var current_tail_width: float = triangle_width * 0.60
+	var half_tw: float = current_tail_width / 2.0
 	var head_rot: float = triangle_head.rotation if triangle_head else 0.0
 	
-	var rel_pts := PackedVector2Array()
-	var top_overlap: Vector2 = Vector2(0, -12.0).rotated(head_rot)
-	rel_pts.append(top_overlap)
+	var all_world_pts: Array[Vector2] = []
+	all_world_pts.append(global_position)
+	all_world_pts.append_array(trail_points)
 	
-	for pt in trail_points:
-		rel_pts.append(pt - global_position)
+	if all_world_pts.size() < 2:
+		return
 		
-	if rel_pts.size() >= 2:
-		draw_polyline(rel_pts, player_color, current_tail_width)
+	for i in range(all_world_pts.size() - 1):
+		var p_start_world: Vector2 = all_world_pts[i]
+		var p_end_world: Vector2 = all_world_pts[i + 1]
+		
+		var rel_start: Vector2 = p_start_world - global_position
+		var rel_end: Vector2 = p_end_world - global_position
+		
+		var dir: Vector2 = rel_end - rel_start
+		if dir.length_squared() < 0.5:
+			continue
+			
+		var norm: Vector2 = Vector2(-dir.y, dir.x).normalized() * half_tw
+		
+		var pt_tl: Vector2
+		var pt_tr: Vector2
+		var pt_br: Vector2
+		var pt_bl: Vector2
+		
+		if i == 0:
+			var base_right: Vector2 = Vector2(half_tw, 0.0).rotated(head_rot)
+			pt_tl = Vector2(-half_tw, -6.0).rotated(head_rot)
+			pt_tr = Vector2(half_tw, -6.0).rotated(head_rot)
+			pt_br = rel_end + base_right
+			pt_bl = rel_end - base_right
+		else:
+			pt_tl = rel_start - norm
+			pt_tr = rel_start + norm
+			pt_br = rel_end + norm
+			pt_bl = rel_end - norm
+			
+		var quad := PackedVector2Array([pt_tl, pt_tr, pt_br, pt_bl])
+		draw_colored_polygon(quad, player_color)
+		draw_circle(rel_end, half_tw, player_color)
 
 func _on_area_entered(area: Area2D) -> void:
 	if current_state == State.DEAD:
